@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+   <head>
+<style>
+body {
+background-color:#ffffff;
+}
+.c640 {
+width:640px;
+height:640px;
+background-color:#aaaaaa;
+}
+.c960 {
+width:960px;
+height:960px;
+background-color:#666666;
+}
+.c1280 {
+width:1280px;
+height:1280px;
+background-color:#666666;
+}
+.c1360 {
+width:1360px;
+height:1360px;
+background-color:#666666;
+}
+.c1400 {
+width:1400px;
+height:1400px;
+background-color:#666666;
+}
+.page {
+width:1400px;
+margin:0 auto;
+background-color:#222222;
+padding:20px;
+}
+.grid {
+position:relative;
+}
+.cube {
+float:left;
+}
+.c320 .cube {
+width:320px;
+height:320px;
+background-color:#ffffff;
+}
+.c960 .cube {
+width:320px;
+height:320px;
+background-color:#ffffff;
+}
+.c1280 .cube {
+width:160px;
+height:160px;
+background-color:#ffffff;
+}
+.c1360 .cube {
+width:80px;
+height:80px;
+background-color:#ffffff;
+}
+.c1400 .cube {
+width:40px;
+height:40px;
+background-color:#ffffff;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  </head>
+   <body>
+<div class="page">
+      <h2>640x640 - grid 640</h2>
+      <div class="grid c640">
+         <div class="cube">
+         </div>
+      </div>
+
+      <h2>960x960 - grid 320</h2>
+      <div class="grid c960">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1280x1280 - grid 160</h2>
+      <div class="grid c1280">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1360x1360 - grid 80</h2>
+      <div class="grid c1360">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1400x1400 - grid 40</h2>
+      <div class="grid c1400">
+         <div class="cube">
+         </div>
+      </div>
+</div>   
+<script type="text/javascript">
+CCUBE={};
+CCUBE.fillcube=function(c1, cw, c0) {
+   var ng=$(c1+" .cube").length;
+   var cclone=$(c1+" .cube").clone();
+   var cside=cw/c0;
+   var maxng=cside*cside;
+   while (ng < maxng) {
+      ng++;
+      var ng2=Math.round(256 -ng*256/maxng);
+      ncolor="rgb("+ng2+","+ng2+","+ng2+")";
+      cclone.clone().css("background-color", ncolor).appendTo(c1);
+   }
+};
+CCUBE.jinit=function() {
+  CCUBE.time2start=new Date(); 
+
+  CCUBE.fillcube(".c960", 960, 320);
+  CCUBE.fillcube(".c1280", 1280, 160);
+  CCUBE.fillcube(".c1360", 1360, 80);
+  CCUBE.fillcube(".c1400", 1400, 40);
+
+  CCUBE.time2end=new Date(); 
+  CCUBE.time2init= CCUBE.time2end.getTime() - CCUBE.time2start.getTime();
+  //alert(CCUBE.time2init + "ms");
+};
+
+$(CCUBE.jinit);
+</script>
+</body>
+</html>

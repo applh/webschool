@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <link rel="stylesheet" href="jquery-ui.css" />
+<style>
+body {
+background-color:#ffffff;
+font-size:14px;
+font-family:verdana;
+}
+.c640 {
+width:640px;
+height:640px;
+background-color:#aaaaaa;
+}
+.c960 {
+width:960px;
+height:960px;
+background-color:#666666;
+}
+.c1280 {
+width:1280px;
+height:1280px;
+background-color:#666666;
+}
+.c1360 {
+width:1360px;
+height:1360px;
+background-color:#666666;
+}
+.c1400 {
+width:1400px;
+height:1400px;
+background-color:#666666;
+}
+.page {
+width:1400px;
+margin:0 auto;
+background-color:#222222;
+padding:20px;
+}
+.grid {
+position:relative;
+/* overflow:hidden;*/
+}
+.cube {
+float:left;
+}
+.c320 .cube {
+width:320px;
+height:320px;
+background-color:#ffffff;
+}
+.c960 .cube {
+width:320px;
+height:320px;
+background-color:#ffffff;
+}
+.c1280 .cube {
+width:160px;
+height:160px;
+background-color:#ffffff;
+}
+.c1360 .cube {
+width:80px;
+height:80px;
+background-color:#ffffff;
+}
+.c1400 .cube {
+width:40px;
+height:40px;
+background-color:#ffffff;
+}
+
+.bar-content {
+position:fixed;
+width:160px;
+top:0px;
+right:0px;
+border:1px solid #111111;
+padding:20px;
+}
+.icon-content {
+width:80px;
+height:80px;
+border:1px dashed #000000;
+}
+
+</style>
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.9.2.custom.min.js"></script>
+   </head>
+   <body>
+<div class="page">
+      <h2>640x640 - grid 640</h2>
+      <div class="grid c640" data-clevel="0">
+         <div class="cube">
+         </div>
+      </div>
+
+      <h2>960x960 - grid 320</h2>
+      <div class="grid c960" data-clevel="1">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1280x1280 - grid 160</h2>
+      <div class="grid c1280" data-clevel="2">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1360x1360 - grid 80</h2>
+      <div class="grid c1360" data-clevel="3">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1400x1400 - grid 40</h2>
+      <div class="grid c1400" data-clevel="4">
+         <div class="cube">
+         </div>
+      </div>
+
+      <div class="bar-content">
+         <div class="draggable resizable icon-content"><div class="cname">TITLE</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">TEXT</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">IMAGE</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MENU</div></div>
+      </div>
+</div>   
+<script type="text/javascript">
+CCUBE={};
+CCUBE.fillcube=function(c1, cw, c0) {
+   var ng=$(c1+" .cube").length;
+   var cclone=$(c1+" .cube").clone();
+   var cside=cw/c0;
+   var maxng=cside*cside;
+   var mingray=0;
+   var maxgray=256;
+   if (maxng < 128) {
+      mingray=64;
+      maxgray=128;
+   }
+
+   while (ng < maxng) {
+      ng++;
+      var ng2=Math.round(mingray+ maxgray -ng*maxgray/maxng);
+      ncolor="rgb("+ng2+","+ng2+","+ng2+")";
+      cclone.clone().css("background-color", ncolor).appendTo(c1);
+   }
+};
+
+CCUBE.cur2drag=null;
+CCUBE.cur2dragtop=0;
+CCUBE.cur2dragleft=0;
+CCUBE.cur2cid=0;
+
+CCUBE.cur2dragc=null;
+CCUBE.cur2dragcid=null;
+
+CCUBE.act2resizestart=function(event, ui) {
+   CCUBE.cur2dragc=$(this);
+   CCUBE.cur2dragcid=$(this).attr("data-cid");
+};
+CCUBE.act2resizestop=function(event, ui) {
+   if (CCUBE.cur2dragc != null) {
+      CCUBE.grid2update();
+
+      CCUBE.cur2dragc=null;
+      CCUBE.cur2dragcid=null;
+   }
+};
+
+CCUBE.act2dragiconstart=function() {
+   CCUBE.cur2drag=$(this).clone();
+};
+CCUBE.act2dragicondrag=function() {
+   var co=$(this).offset();
+   CCUBE.cur2dragtop=co.top;
+   CCUBE.cur2dragleft=co.left;
+};
+CCUBE.act2dragcontent=function() {
+   CCUBE.cur2dragc=$(this);
+   CCUBE.cur2dragcid=$(this).attr("data-cid");
+};
+CCUBE.act2dropicon=function(event, ui) {
+   if (CCUBE.cur2drag != null) {
+      CCUBE.cur2cid++;
+
+      var grid2offset=$(this).offset();
+      var grid2level=parseInt($(this).attr("data-clevel"));
+      var grid2target=".grid";
+      if (grid2level == 0) {
+         grid2target=".c640, .c960, .c1280, .c1360, .c1400";
+      }
+      if (grid2level == 1) {
+         grid2target=".c960, .c1280, .c1360, .c1400";
+      }
+      if (grid2level == 2) {
+         grid2target=".c1280, .c1360, .c1400";
+      }
+      if (grid2level == 3) {
+         grid2target=".c1360, .c1400";
+      }
+      if (grid2level == 4) {
+         grid2target=".c1400";
+      }
+
+      $(CCUBE.cur2drag)
+            .find(".cname")
+            .append("-"+grid2level+"-"+CCUBE.cur2cid);
+      $(CCUBE.cur2drag)
+            .appendTo(grid2target)
+            .attr("data-cid", CCUBE.cur2cid)
+            .draggable({grid: [5, 5], start: CCUBE.act2dragcontent})
+            .resizable({start: CCUBE.act2resizestart, stop: CCUBE.act2resizestop})
+            .css("position", "absolute")
+            .css("top", CCUBE.cur2dragtop - grid2offset.top)
+            .css("left", CCUBE.cur2dragleft - grid2offset.left)
+            ;
+
+      CCUBE.cur2drag=null;
+   }
+
+   if (CCUBE.cur2dragc != null) {
+      CCUBE.grid2update();
+
+      CCUBE.cur2dragc=null;
+      CCUBE.cur2dragcid=null;
+   }
+};
+
+CCUBE.grid2update=function() {
+   if (CCUBE.cur2dragc != null) {
+      var c2remove=false;
+      var cpos=$(CCUBE.cur2dragc).position();
+      var cposw=$(CCUBE.cur2dragc).width();
+      var cposh=$(CCUBE.cur2dragc).height();
+      
+      var cpos640left=cpos.left;
+      var cpos640top=cpos.top;
+      var cpos640w=cposw;
+      var cpos640h=cposh;
+
+      if (cpos640w > 640) cpos640w = 640;
+      if (cpos640h > 640) cpos640h = 640;
+      if (cpos640left+cpos640w > 640) cpos640left=640-cpos640w;
+      if (cpos640top+cpos640h > 640) cpos640top=640-cpos640h;
+      if (cpos640left+cpos640w < 0) c2remove=true;
+      if (cpos640top+cpos640h < 0) c2remove=true;
+
+      $('.c640 .draggable[data-cid="'+CCUBE.cur2dragcid+'"]')
+         .height(cpos640h)
+         .width(cpos640w)
+         .css("top", cpos640top)
+         .css("left", cpos640left);
+
+      var cpos960left=cpos.left;
+      var cpos960top=cpos.top;
+      var cpos960w=cposw;
+      var cpos960h=cposh;
+
+      if (cpos960w > 960) cpos960w = 960;
+      if (cpos960h > 960) cpos960h = 960;
+      if (cpos960left+cpos960w > 960) cpos960left=960-cpos960w;
+      if (cpos960top+cpos960h > 960) cpos960top=960-cpos960h;
+      if (cpos960left+cpos960w < 0) c2remove=true;
+      if (cpos960top+cpos960h < 0) c2remove=true;
+
+      $('.c960 .draggable[data-cid="'+CCUBE.cur2dragcid+'"]')
+         .height(cpos960h)
+         .width(cpos960w)
+         .css("top", cpos960top)
+         .css("left", cpos960left);
+
+      var cpos1280left=cpos.left;
+      var cpos1280top=cpos.top;
+      var cpos1280w=cposw;
+      var cpos1280h=cposh;
+
+      if (cpos1280w > 1280) cpos1280w = 1280;
+      if (cpos1280h > 1280) cpos1280h = 1280;
+      if (cpos1280left+cpos1280w > 1280) cpos1280left=1280-cpos1280w;
+      if (cpos1280top+cpos1280h > 1280) cpos1280top=1280-cpos1280h;
+      if (cpos1280left+cpos1280w < 0) c2remove=true;
+      if (cpos1280top+cpos1280h < 0) c2remove=true;
+
+      $('.c1280 .draggable[data-cid="'+CCUBE.cur2dragcid+'"]')
+         .height(cpos1280h)
+         .width(cpos1280w)
+         .css("top", cpos1280top)
+         .css("left", cpos1280left);
+
+      var cpos1360left=cpos.left;
+      var cpos1360top=cpos.top;
+      var cpos1360w=cposw;
+      var cpos1360h=cposh;
+
+      if (cpos1360w > 1360) cpos1360w = 1360;
+      if (cpos1360h > 1360) cpos1360h = 1360;
+      if (cpos1360left+cpos1360w > 1360) cpos1360left=1360-cpos1360w;
+      if (cpos1360top+cpos1360h > 1360) cpos1360top=1360-cpos1360h;
+      if (cpos1360left+cpos1360w < 0) c2remove=true;
+      if (cpos1360top+cpos1360h < 0) c2remove=true;
+
+      $('.c1360 .draggable[data-cid="'+CCUBE.cur2dragcid+'"]')
+         .height(cpos1360h)
+         .width(cpos1360w)
+         .css("top", cpos1360top)
+         .css("left", cpos1360left);
+
+      var cpos1400left=cpos.left;
+      var cpos1400top=cpos.top;
+      var cpos1400w=cposw;
+      var cpos1400h=cposh;
+
+      if (cpos1400w > 1400) cpos1400w = 1400;
+      if (cpos1400h > 1400) cpos1400h = 1400;
+      if (cpos1400left+cpos1400w > 1400) cpos1400left=1400-cpos1400w;
+      if (cpos1400top+cpos1400h > 1400) cpos1400top=1400-cpos1400h;
+      if (cpos1400left+cpos1400w < 0) c2remove=true;
+      if (cpos1400top+cpos1400h < 0) c2remove=true;
+
+      $('.c1400 .draggable[data-cid="'+CCUBE.cur2dragcid+'"]')
+         .height(cpos1400h)
+         .width(cpos1400w)
+         .css("top", cpos1400top)
+         .css("left", cpos1400left);
+
+
+      if (c2remove) {
+         $('.grid .draggable[data-cid="'+CCUBE.cur2dragcid+'"]').remove();
+      }
+   }
+};
+
+
+CCUBE.jinit=function() {
+  CCUBE.time2start=new Date(); 
+
+  CCUBE.fillcube(".c960", 960, 320);
+  CCUBE.fillcube(".c1280", 1280, 160);
+  CCUBE.fillcube(".c1360", 1360, 80);
+  CCUBE.fillcube(".c1400", 1400, 40);
+
+  CCUBE.time2end=new Date(); 
+  CCUBE.time2init= CCUBE.time2end.getTime() - CCUBE.time2start.getTime();
+  //alert(CCUBE.time2init + "ms");
+
+  $(".draggable").draggable({
+//     helper: "clone", // FIXME: blocking easy offset computing
+     revert: true,
+     start: CCUBE.act2dragiconstart,
+     drag: CCUBE.act2dragicondrag
+     });
+  //$(".resizable").resizable();
+  $(".grid").droppable({ 
+     //activeClass: "ui-state-highlight",
+     drop: CCUBE.act2dropicon
+      });
+};
+
+$(CCUBE.jinit);
+</script>
+</body>
+</html>
