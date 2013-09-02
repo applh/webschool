@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <link rel="stylesheet" href="jquery-ui.css" />
+<style>
+body {
+background-color:#ffffff;
+font-size:14px;
+font-family:verdana;
+}
+.c500 {
+width:500px;
+height:500px;
+background-color:#aaaaaa;
+}
+.c1000 {
+width:1000px;
+height:1000px;
+background-color:#666666;
+}
+.c1500 {
+width:1500px;
+height:1500px;
+background-color:#666666;
+}
+
+.page {
+width:1680px;
+margin:0 auto;
+background-color:#222222;
+padding:20px;
+}
+.grid {
+position:relative;
+/* overflow:hidden;*/
+}
+.cube {
+float:left;
+}
+.c320 .cube {
+width:320px;
+height:320px;
+background-color:#ffffff;
+}
+.c500 .cube {
+width:50px;
+height:50px;
+background-color:#ffffff;
+}
+.c1000 .cube {
+width:100px;
+height:100px;
+background-color:#ffffff;
+}
+.c1500 .cube {
+width:150px;
+height:150px;
+background-color:#ffffff;
+}
+
+.bar-content {
+position:fixed;
+width:160px;
+top:0px;
+right:0px;
+border:1px solid #111111;
+padding:20px;
+}
+.icon-content {
+width:80px;
+height:80px;
+border:1px dashed #000000;
+}
+
+</style>
+<script type="text/javascript" src="jquery-1.9.1.js"></script>
+<script type="text/javascript" src="jquery-ui.min.js"></script>
+   </head>
+   <body>
+<div class="page">
+      <h2>500x500 - grid 50</h2>
+      <div class="grid c500" data-clevel="0">
+         <div class="cube">
+         </div>
+      </div>
+
+      <h2>1000x1000 - grid 100</h2>
+      <div class="grid c1000" data-clevel="1">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <h2>1500x1500 - grid 150</h2>
+      <div class="grid c1500" data-clevel="2">
+         <div class="cube">
+         </div>
+      </div>
+ 
+      <div class="bar-content">
+         <div class="draggable resizable icon-content"><div class="cname">TITLE</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">TEXT</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">IMAGE</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MENU</div></div>
+         <div class="icon-content"><div class="info">...</div></div>
+      </div>
+</div>   
+<script type="text/javascript">
+CCUBE={};
+CCUBE.stamp=0;
+CCUBE.fillcube=function(c1, cw, c0) {
+   var ng=$(c1+" .cube").length;
+   var cclone=$(c1+" .cube").clone();
+   var cside=cw/c0;
+   var maxng=cside*cside;
+   var mingray=0;
+   var maxgray=256;
+   if (maxng < 128) {
+      mingray=64;
+      maxgray=128;
+   }
+
+   while (ng < maxng) {
+      ng++;
+      var ng2=Math.round(mingray+ maxgray -ng*maxgray/maxng);
+      ncolor="rgb("+ng2+","+ng2+","+ng2+")";
+      cclone.clone().css("background-color", ncolor).appendTo(c1);
+   }
+};
+
+CCUBE.cur2drag=null;
+CCUBE.cur2dragtop=0;
+CCUBE.cur2dragleft=0;
+CCUBE.cur2cid=0;
+
+CCUBE.cur2dragc=null;
+CCUBE.cur2dragcid=null;
+CCUBE.cur2draggrid=0;
+
+CCUBE.act2resizestart=function(event, ui) {
+   CCUBE.cur2dragc=$(this);
+   CCUBE.cur2dragcid=$(this).attr("data-cid");
+   CCUBE.cur2draggrid=$(this).attr("data-clevel");
+};
+CCUBE.act2resizestop=function(event, ui) {
+   if (CCUBE.cur2dragc != null) {
+      CCUBE.grid2update();
+
+      CCUBE.cur2dragc=null;
+      CCUBE.cur2dragcid=null;
+      CCUBE.cur2draggrid=null;
+   }
+};
+
+CCUBE.act2dragiconstart=function() {
+   CCUBE.cur2drag=$(this).clone();
+};
+CCUBE.act2dragicondrag=function() {
+   var co=$(this).offset();
+   CCUBE.cur2dragtop=co.top;
+   CCUBE.cur2dragleft=co.left;
+};
+CCUBE.act2dragcontent=function() {
+   CCUBE.cur2dragc=$(this);
+   CCUBE.cur2dragcid=$(this).attr("data-cid");
+   CCUBE.cur2draggrid=$(this).parent(".grid").attr("data-clevel");
+   
+};
+CCUBE.act2dropicon=function(event, ui) {
+   if (CCUBE.cur2drag != null) {
+      CCUBE.cur2cid++;
+
+      var grid2offset=$(this).offset();
+      var grid2level=parseInt($(this).attr("data-clevel"));
+      var grid2target=".grid";
+      if (grid2level == 0) {
+         grid2target=".c500, .c1000, .c1500";
+      }
+      if (grid2level == 1) {
+         grid2target=".c1000, .c1500";
+      }
+      if (grid2level == 2) {
+         grid2target=".c1500";
+      }
+      $(CCUBE.cur2drag)
+            .find(".cname")
+            .append("-"+grid2level+"-"+CCUBE.cur2cid);
+      $(CCUBE.cur2drag)
+            .appendTo(grid2target)
+            .attr("data-cid", CCUBE.cur2cid)
+            .attr("data-clevel", grid2level)
+            .draggable({grid: [5, 5], start: CCUBE.act2dragcontent})
+            .resizable({start: CCUBE.act2resizestart, stop: CCUBE.act2resizestop})
+            .css("position", "absolute")
+            .css("top", CCUBE.cur2dragtop - grid2offset.top)
+            .css("left", CCUBE.cur2dragleft - grid2offset.left)
+            ;
+
+      CCUBE.cur2dragc=$('.c500 .draggable[data-cid="'+CCUBE.cur2cid+'"]');
+   }
+
+   if (CCUBE.cur2dragc != null) {
+      CCUBE.cur2draggrid=grid2level;
+      CCUBE.cur2dragcid=CCUBE.cur2cid;
+
+      CCUBE.grid2update();
+
+      CCUBE.cur2drag=null;
+      CCUBE.cur2dragc=null;
+      CCUBE.cur2dragcid=null;
+   }
+};
+
+CCUBE.grid2update0=function(gw, cl, ct, cw, ch) {
+   gw=Math.round(gw);
+   cl=Math.round(cl);
+   ct=Math.round(ct);
+   cw=Math.round(cw);
+   ch=Math.round(ch);
+
+   if (cw > gw) cw=gw;
+   if (ch > gw) ch=gw;
+   if (cl+cw > gw) cl=gw-cw;
+   if (ct+ch > gw) ct=gw-ch;
+
+   //alert(gw+'/'+cl+'/'+ct+'/'+cw+'/'+ch);
+
+   var c2remove=false;
+   if (cl+cw < 0) c2remove=true;
+   if (ct+ch < 0) c2remove=true;
+
+   var grid2class='.c'+gw;
+   var grid2sel='.c'+gw+' .draggable[data-cid="'+CCUBE.cur2dragcid+'"]';
+   //alert(grid2sel);
+   //alert(grid2sel+'/'+gw+'/'+cl+'/'+ct+'/'+cw+'/'+ch);
+   $(grid2sel)
+         .height(ch)
+         .width(cw)
+         .css("top", ct)
+         .css("left", cl);
+   if (c2remove) {
+      $(grid2sel).remove();
+   }
+}
+
+CCUBE.grid2update=function() {
+   if (CCUBE.cur2dragc != null) {
+
+      var gw, cl, ct, cw, ch;
+      var gscale=1.0;
+   
+      var cpos=$(CCUBE.cur2dragc).position();
+      var cposw=$(CCUBE.cur2dragc).width();
+      var cposh=$(CCUBE.cur2dragc).height();
+      
+      CCUBE.cur2draggrid=parseInt(CCUBE.cur2draggrid);
+      //alert(CCUBE.cur2draggrid);
+
+      ct=cpos.top;
+      cl=cpos.left;
+      var info=CCUBE.cur2draggrid+'-'+CCUBE.cur2dragcid+'-'+cl+'-'+ct;
+      $(".bar-content .info").html(info+','+CCUBE.stamp++);
+
+      if (CCUBE.cur2draggrid == 0) {
+         gw=500;
+         gscale=gw/500.0;
+         cl=cpos.left/gscale;
+         ct=cpos.top/gscale;
+         cw=cposw/gscale;
+         ch=cposh/gscale;
+      }
+      if (CCUBE.cur2draggrid == 1) {
+         gw=1000;
+         gscale=gw/500.0;
+         cl=cpos.left/gscale;
+         ct=cpos.top/gscale;
+         cw=cposw/gscale;
+         ch=cposh/gscale;
+      }
+      if (CCUBE.cur2draggrid == 2) {
+         gw=1500;
+         gscale=gw/500.0;
+         cl=cpos.left/gscale;
+         ct=cpos.top/gscale;
+         cw=cposw/gscale;
+         ch=cposh/gscale;
+      }
+ 
+      CCUBE.grid2update0(500,  cl*1.0, ct*1.0, cw*1.0, ch*1.0);
+      CCUBE.grid2update0(1000,  cl*2.0, ct*2.0, cw*2.0, ch*2.0);
+      CCUBE.grid2update0(1500, cl*3.0, ct*3.0, cw*3.0, ch*3.0);
+   }
+};
+
+
+CCUBE.jinit=function() {
+  CCUBE.time2start=new Date(); 
+
+  CCUBE.fillcube(".c500", 500, 50);
+   CCUBE.fillcube(".c1000", 1000, 100);
+  CCUBE.fillcube(".c1500", 1500, 150);
+
+  CCUBE.time2end=new Date(); 
+  CCUBE.time2init= CCUBE.time2end.getTime() - CCUBE.time2start.getTime();
+  //alert(CCUBE.time2init + "ms");
+
+  $(".draggable").draggable({
+//     helper: "clone", // FIXME: blocking easy offset computing
+     revert: true,
+     start: CCUBE.act2dragiconstart,
+     drag: CCUBE.act2dragicondrag
+     });
+  //$(".resizable").resizable();
+  $(".grid").droppable({ 
+     //activeClass: "ui-state-highlight",
+     drop: CCUBE.act2dropicon
+      });
+};
+
+$(CCUBE.jinit);
+</script>
+</body>
+</html>
