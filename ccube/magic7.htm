@@ -36,26 +36,23 @@ position:relative;
 }
 .cube {
 float:left;
+background-color:#eeeeee;
 }
 .c320 .cube {
 width:320px;
 height:320px;
-background-color:#ffffff;
 }
 .c500 .cube {
 width:50px;
 height:50px;
-background-color:#ffffff;
 }
 .c1000 .cube {
 width:100px;
 height:100px;
-background-color:#ffffff;
 }
 .c1500 .cube {
 width:150px;
 height:150px;
-background-color:#ffffff;
 }
 
 .bar-content {
@@ -113,10 +110,10 @@ CCUBE.fillcube=function(c1, cw, c0) {
    var cside=cw/c0;
    var maxng=cside*cside;
    var mingray=0;
-   var maxgray=256;
+   var maxgray=250;
    if (maxng < 128) {
-      mingray=64;
-      maxgray=128;
+      mingray=50;
+      maxgray=180;
    }
 
    while (ng < maxng) {
