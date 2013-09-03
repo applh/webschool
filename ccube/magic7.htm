@@ -56,7 +56,6 @@ height:150px;
 }
 
 .bar-content {
-position:fixed;
 width:160px;
 top:0px;
 right:0px;
@@ -65,15 +64,36 @@ padding:20px;
 }
 .icon-content {
 width:80px;
-height:80px;
-border:1px dashed #000000;
+height:45px;
+border:1px dotted #000000;
+padding:.5em;
 }
 
+.tree {
+   position:fixed;
+   top:1em;
+   right:1em;
+}
 </style>
 <script type="text/javascript" src="jquery-1.9.1.js"></script>
 <script type="text/javascript" src="jquery-ui.min.js"></script>
    </head>
    <body>
+<div class="tree">
+<h3>PAGE</h3>
+<ol class="design">
+   <li>HEADER</li>
+   <li>BODY</li>
+   <li>FOOTER</li>
+</ol>
+      <div class="bar-content">
+         <div class="draggable resizable icon-content"><div class="cname">TITLE</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">TEXT</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MEDIA</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MENU</div></div>
+         <div class="icon-content"><div class="info">...</div></div>
+      </div>
+</div>
 <div class="page">
       <h2>500x500 - grid 50</h2>
       <div class="grid c500" data-clevel="0">
@@ -93,13 +113,6 @@ border:1px dashed #000000;
          </div>
       </div>
  
-      <div class="bar-content">
-         <div class="draggable resizable icon-content"><div class="cname">TITLE</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">TEXT</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">IMAGE</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">MENU</div></div>
-         <div class="icon-content"><div class="info">...</div></div>
-      </div>
 </div>   
 <script type="text/javascript">
 CCUBE={};
@@ -289,6 +302,10 @@ CCUBE.grid2update=function() {
 };
 
 
+CCUBE.act2droptree=function (event, ui) {
+   alert('ADD');
+};
+
 CCUBE.jinit=function() {
   CCUBE.time2start=new Date(); 
 
@@ -311,6 +328,11 @@ CCUBE.jinit=function() {
      //activeClass: "ui-state-highlight",
      drop: CCUBE.act2dropicon
       });
+
+  $(".tree .design li").droppable({
+     activeClass: "ui-state-highlight",
+     drop: CCUBE.act2droptree
+   });
 };
 
 $(CCUBE.jinit);
