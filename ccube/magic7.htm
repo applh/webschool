@@ -67,12 +67,23 @@ width:80px;
 height:45px;
 border:1px dotted #000000;
 padding:.5em;
+position:relative;
 }
 
 .tree {
    position:fixed;
    top:1em;
    right:1em;
+   padding:1em;
+   background-color:#eeeeee;
+}
+.star {
+   position:absolute;
+   top:5px;
+   right:5px;
+   width:14px;
+   height:14px;
+   background: url('images/iconset.png') no-repeat scroll -144px 0px transparent;
 }
 </style>
 <script type="text/javascript" src="jquery-1.9.1.js"></script>
@@ -87,10 +98,10 @@ padding:.5em;
    <li>FOOTER</li>
 </ol>
       <div class="bar-content">
-         <div class="draggable resizable icon-content"><div class="cname">TITLE</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">TEXT</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">MEDIA</div></div>
-         <div class="draggable resizable icon-content"><div class="cname">MENU</div></div>
+         <div class="draggable resizable icon-content"><div class="cname">TITLE</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content"><div class="cname">TEXT</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MEDIA</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content"><div class="cname">MENU</div><div class="star"></div></div>
          <div class="icon-content"><div class="info">...</div></div>
       </div>
 </div>
