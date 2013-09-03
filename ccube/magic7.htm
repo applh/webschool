@@ -74,8 +74,11 @@ position:relative;
    position:fixed;
    top:1em;
    right:1em;
-   padding:1em;
+   padding:.5em;
    background-color:#eeeeee;
+}
+.tree h4 {
+   margin:.5em;
 }
 .star {
    position:absolute;
@@ -91,11 +94,26 @@ position:relative;
    </head>
    <body>
 <div class="tree">
-<h3>PAGE</h3>
+<h4>PAGE</h4>
 <ol class="design">
-   <li>HEADER</li>
-   <li>BODY</li>
-   <li>FOOTER</li>
+   <li>
+      <div>HEADER</div>
+      <ol>
+         <li>TITLE</li>
+         <li>LOGO</li>
+         <li>MENU</li>
+      </ol>
+   </li>
+   <li>BODY
+   </li>
+   <li>
+      <div>FOOTER</div>
+      <ol>
+         <li>copyright</li>
+         <li>legal mentions</li>
+         <li>contact</li>
+      </ol>
+   </li>
 </ol>
       <div class="bar-content">
          <div class="draggable resizable icon-content"><div class="cname">TITLE</div><div class="star"></div></div>
