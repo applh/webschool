@@ -7,28 +7,31 @@ body {
 background-color:#ffffff;
 font-size:14px;
 font-family:verdana;
-color:#666666;
+color:#aaaaaa;
 }
 .c500 {
 width:500px;
 height:500px;
 background-color:#aaaaaa;
+font-size:12px;
 }
 .c1000 {
 width:1000px;
 height:1000px;
 background-color:#666666;
+font-size:16px;
 }
 .c1500 {
 width:1500px;
 height:1500px;
 background-color:#666666;
+font-size:20px;
 }
 
 .page {
 width:1680px;
 margin:0 auto;
-background-color:#bbbbbb;
+background-color:#eeeeee;
 padding:20px;
 }
 .grid {
@@ -37,7 +40,7 @@ position:relative;
 }
 .cube {
 float:left;
-background-color:#eeeeee;
+background-color:#ffffff;
 }
 .c320 .cube {
 width:320px;
@@ -66,9 +69,12 @@ padding:20px;
 .icon-content {
 width:80px;
 height:45px;
-border:1px dotted #000000;
 padding:.5em;
 position:relative;
+overflow:hidden;
+}
+.icon-content:hover {
+border:1px dotted #000000;
 }
 
 .tree {
@@ -81,13 +87,39 @@ position:relative;
 .tree h4 {
    margin:.5em;
 }
-.star {
+.tree .star {
    position:absolute;
    top:5px;
    right:5px;
    width:14px;
    height:14px;
    background: url('images/iconset.png') no-repeat scroll -144px 0px transparent;
+}
+.grid .star {
+   display:none;
+}
+.grid .resizable .ui-resizable-handle {
+   display:none;
+}
+.grid .resizable:hover .ui-resizable-handle {
+   display:block;
+}
+
+.grid h3 {
+   font-size:1.2em;
+}
+.grid .cname .media {
+   background-color:#aaaaaa;
+   min-width:480px;
+   min-height:480px;
+}
+.grid .menu a {
+   text-decoration:none;
+   color:#aaaaaa;
+}
+.grid .menu a:hover {
+   text-decoration:underline;
+   color:#666666;
 }
 </style>
 <script type="text/javascript" src="jquery-1.9.1.js"></script>
@@ -117,10 +149,10 @@ position:relative;
    </li>
 </ol>
       <div class="bar-content">
-         <div class="draggable resizable icon-content"><div class="cname">TITLE</div><div class="star"></div></div>
-         <div class="draggable resizable icon-content"><div class="cname">TEXT</div><div class="star"></div></div>
-         <div class="draggable resizable icon-content"><div class="cname">MEDIA</div><div class="star"></div></div>
-         <div class="draggable resizable icon-content"><div class="cname">MENU</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content" data-ci="title"><div class="cname">TITLE</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content" data-ci="text"><div class="cname">TEXT</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content" data-ci="media"><div class="cname">MEDIA</div><div class="star"></div></div>
+         <div class="draggable resizable icon-content" data-ci="menu"><div class="cname">MENU</div><div class="star"></div></div>
          <div class="icon-content"><div class="info">...</div></div>
       </div>
 </div>
@@ -155,8 +187,8 @@ CCUBE.fillcube=function(c1, cw, c0) {
    var mingray=0;
    var maxgray=250;
    if (maxng < 128) {
-      mingray=50;
-      maxgray=180;
+      mingray=80;
+      maxgray=220;
    }
 
    while (ng < maxng) {
@@ -205,6 +237,8 @@ CCUBE.act2dragcontent=function() {
    CCUBE.cur2draggrid=$(this).parent(".grid").attr("data-clevel");
    
 };
+CCUBE.lorem="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
 CCUBE.act2dropicon=function(event, ui) {
    if (CCUBE.cur2drag != null) {
       CCUBE.cur2cid++;
@@ -221,9 +255,38 @@ CCUBE.act2dropicon=function(event, ui) {
       if (grid2level == 2) {
          grid2target=".c1500";
       }
-      $(CCUBE.cur2drag)
+
+      var ci=$(CCUBE.cur2drag).attr('data-ci');
+      if (ci == 'title') {
+         $(CCUBE.cur2drag)
             .find(".cname")
+            .attr('title', CCUBE.cur2cid)
+            .html("<h3>THIS IS A TITLE</h3>");
+      }
+      else if (ci == 'text') {
+         $(CCUBE.cur2drag)
+            .find(".cname")
+            .attr('title', CCUBE.cur2cid)
+            .html("<p>"+CCUBE.lorem+"</p>");
+      }
+      else if (ci == 'media') {
+         $(CCUBE.cur2drag)
+            .find(".cname")
+            .attr('title', CCUBE.cur2cid)
+            .html('<div class="media"></div>');
+      }
+      else if (ci == 'menu') {
+         $(CCUBE.cur2drag)
+            .find(".cname")
+            .attr('title', CCUBE.cur2cid)
+            .html('<div class="menu"><a href="#">MENU</a></div>');
+      }
+      else {
+         $(CCUBE.cur2drag)
+            .find(".cname")
+            .attr('title', CCUBE.cur2cid)
             .append("-"+grid2level+"-"+CCUBE.cur2cid);
+      }
       $(CCUBE.cur2drag)
             .appendTo(grid2target)
             .attr("data-cid", CCUBE.cur2cid)
