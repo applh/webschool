@@ -74,6 +74,7 @@ width:100px;
 height:100px;
 position:absolute;
 border:1px #666666 dashed;
+background-color:#ffffff;
 }
 
 .tb2 {
@@ -83,3 +84,9 @@ right:0px;
 right:0px;
 bottom:0px;
 }
+
+.tools {
+border-bottom-left-radius:32px;
+border-bottom-right-radius:32px;
+}
+
