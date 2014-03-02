@@ -75,3 +75,11 @@ height:100px;
 position:absolute;
 border:1px #666666 dashed;
 }
+
+.tb2 {
+right:0px;
+}
+.tb3 {
+right:0px;
+bottom:0px;
+}
