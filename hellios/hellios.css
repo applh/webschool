@@ -27,6 +27,7 @@ height:100px;
 background-color:#ffffff;
 overflow:hidden;
 position:absolute;
+border-radius:8px;
 }
 
 .act1 {
@@ -61,3 +62,16 @@ background-color:#AA66CC;
 background-color:#FF4444;
 }
 
+.armanoid {
+background-color:#aaaaaa;
+position:relative;
+margin:0 auto;
+width:800px;
+height:800px;
+}
+.skel {
+width:100px;
+height:100px;
+position:absolute;
+border:1px #666666 dashed;
+}
