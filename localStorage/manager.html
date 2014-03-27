@@ -2,9 +2,9 @@
 <html>
 	<head>
 	<style>
-body {
-font-size:14px;
-}
+
+/* LAYOUT */
+
 .page {
 max-width:1000px;
 margin:0 auto;
@@ -12,7 +12,7 @@ padding:1em;
 }
 textarea {
 min-width:480px;
-min-height:360px;
+min-height:480px;
 }
 input[type="text"] {
 min-width:360px;
@@ -31,6 +31,25 @@ width:100px;
 a {
 text-decoration:none;
 }
+
+.page2col .col {
+width:50%;
+float:left;
+}
+
+/* FONTS */
+
+body {
+font-size:14px;
+}
+div {
+font-size:1em;
+}
+input, textarea {
+font-family: monospace, sans-serif;
+font-size:1em;
+}
+
 	</style>
 <script type="text/javascript" src="jquery-2.1.0.min.js"></script> 
 <script type="text/javascript" src="base64_encode.js"></script> 
@@ -219,11 +238,10 @@ jQuery(WParty.jinit);
 </script> 
 	</head>
 	<body>
-	<div class="page">
-<div><label>website</label><input class="form-site" type="text" name="form-site" value="dev002.local"></div>
-<div><label>login</label><input class="form-user" type="text" name="form-user" value="webmaster"></div>
-<div><label>password</label><input class="form-password" type="text" name="form-password" value="webmaster"></div>
-<hr>
+	<div class="page page2col">
+
+	<!--COL1-->
+	<div class="col">
 <div><label>title</label><input class="form-title" type="text" name="form-title" value="title"></div>
 <div><textarea class="form-content" name="form-content">
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -232,16 +250,27 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </textarea></div>
-<div><a href="#save" class="act-save">SAVE</a> / <a href="#go" class="act-go">PUBLISH</a></div>
+	</div>
+	<!--COL2-->
+	<div class="col">
+<div class="local-data"></div>
+<hr>
+<div><a href="#save" class="act-save">SAVE</a></div>
+<hr>
+<div><a href="#go" class="act-go">PUBLISH</a></div>
 <hr>
 <div class="ajax-response"></div>
 <hr>
-<div class="local-data"></div>
+<div><label>website</label><input class="form-site" type="text" name="form-site" value="dev002.local"></div>
+<div><label>login</label><input class="form-user" type="text" name="form-user" value="webmaster"></div>
+<div><label>password</label><input class="form-password" type="text" name="form-password" value="webmaster"></div>
 <hr>
 <div><a href="#publish-selection" class="act-publish-selection">PUBLISH SELECTION</a></div>
 <hr>
 <div><a href="#delete-selection" class="act-delete-selection">DELETE SELECTION</a></div>
 <div><a href="#reset" class="act-reset">DELETE ALL!</a></div>
+	</div>
+		
 	</div>
 	</body>
 </html>
