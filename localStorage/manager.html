@@ -208,7 +208,7 @@ WParty.local_data_load=function() {
 			else {
 				html='<div class="data-info">'+key+':'+val+'</div>';
 			}
-			jQuery(".local-data").append(html);
+			jQuery(".local-data").prepend(html);
 		}
 	}
 };
