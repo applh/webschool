@@ -13,10 +13,13 @@ padding:1em;
 textarea {
 min-width:480px;
 min-height:480px;
+padding:1em;
 }
 input[type="text"] {
 min-width:360px;
+padding:.5em;
 }
+
 .data-val {
 display:none;
 }
@@ -27,6 +30,7 @@ label {
 display:block;
 float:left;
 width:100px;
+padding:.5em;
 }
 a {
 text-decoration:none;
@@ -36,6 +40,18 @@ text-decoration:none;
 width:50%;
 float:left;
 }
+
+.page2col .col60 {
+width:60%;
+}
+.page2col .col40 {
+width:40%;
+}
+
+.page2col .col40 input[type="text"]{
+min-width:200px;
+}
+
 
 /* FONTS */
 
@@ -154,6 +170,8 @@ WParty.act_reset=function() {
 };
 WParty.act_load=function() {
 	if (typeof localStorage != 'undefined') {
+		//WParty.auto_save();
+		
 		var key=jQuery(this).data("key");
 		var	val=localStorage.getItem(key);
 		var request=JSON.parse(val);
@@ -181,8 +199,9 @@ WParty.local_data_load=function() {
 			if (typeof request === 'object') {
 				title=base64_decode(request.title);
 				html=	'<div class="data-request">'
-						+'<input class="data-check" type="checkbox" data-key="'+key+'">'
-						+'<a class="act-load" title="'+key+'" data-key="'+key+'" href="#load">'+title+'</a>'
+						+'&nbsp;&nbsp;<a class="act-load" title="'+key+'" data-key="'+key+'" href="#load">[edit]</a>'
+						+'&nbsp;&nbsp;<input class="data-check" type="checkbox" data-key="'+key+'">'
+						+'&nbsp;&nbsp;<a class="act-load" title="'+key+'" data-key="'+key+'" href="#load"><strong>'+title+'</strong></a>'
 						+'</div>'
 						+'<div class="data-val">'+val+'</div>';
 			}
@@ -241,8 +260,8 @@ jQuery(WParty.jinit);
 	<div class="page page2col">
 
 	<!--COL1-->
-	<div class="col">
-<div><label>title</label><input class="form-title" type="text" name="form-title" value="title"></div>
+	<div class="col col60">
+<div><label>Page Title</label><input class="form-title" type="text" name="form-title" value="title"></div>
 <div><textarea class="form-content" name="form-content">
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
@@ -252,8 +271,7 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 </textarea></div>
 	</div>
 	<!--COL2-->
-	<div class="col">
-<div class="local-data"></div>
+	<div class="col col40">
 <hr>
 <div><a href="#save" class="act-save">SAVE</a></div>
 <hr>
@@ -261,11 +279,13 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 <hr>
 <div class="ajax-response"></div>
 <hr>
-<div><label>website</label><input class="form-site" type="text" name="form-site" value="dev002.local"></div>
-<div><label>login</label><input class="form-user" type="text" name="form-user" value="webmaster"></div>
-<div><label>password</label><input class="form-password" type="text" name="form-password" value="webmaster"></div>
+<div><label>Website</label><input class="form-site" type="text" name="form-site" value="dev002.local"></div>
+<div><label>Login</label><input class="form-user" type="text" name="form-user" value="webmaster"></div>
+<div><label>Password</label><input class="form-password" type="text" name="form-password" value="webmaster"></div>
 <hr>
 <div><a href="#publish-selection" class="act-publish-selection">PUBLISH SELECTION</a></div>
+<hr>
+<div class="local-data"></div>
 <hr>
 <div><a href="#delete-selection" class="act-delete-selection">DELETE SELECTION</a></div>
 <div><a href="#reset" class="act-reset">DELETE ALL!</a></div>
